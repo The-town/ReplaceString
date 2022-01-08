@@ -1,7 +1,6 @@
 import tkinter.scrolledtext as scrolled_text
 import tkinter as tk
-from tkinter import NSEW
-from typing import Tuple, List
+from typing import List
 
 from replaceRule import delete_blank_line, change_string
 
