@@ -3,7 +3,7 @@ import tkinter as tk
 from typing import List
 
 from replaceRule import change_string
-
+from validate import validate_number_of_replace_rule
 
 class Main:
     def __init__(self) -> None:
@@ -43,11 +43,12 @@ class Main:
                 strings_after_change.append(rule.split(" -> ")[1])
 
         self.output_replace_text.delete(1.0, tk.END)
-        if len(strings_before_change) == len(strings_after_change):
+        is_validate, error_msg = validate_number_of_replace_rule(strings_before_change, strings_after_change)
+        if is_validate:
             output_text: str = change_string(input_text, tuple(strings_before_change), tuple(strings_after_change))
             self.output_replace_text.insert(tk.END, output_text)
         else:
-            self.output_replace_text.insert(tk.END, "【エラー】置換前の文字列と置換後の文字列の数が合いません。")
+            self.output_replace_text.insert(tk.END, error_msg)
 
 
 class Frame(tk.Frame):
