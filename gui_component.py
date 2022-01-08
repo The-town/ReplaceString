@@ -2,7 +2,7 @@ import tkinter.scrolledtext as scrolled_text
 import tkinter as tk
 from typing import List
 
-from replaceRule import delete_blank_line, change_string
+from replaceRule import change_string
 
 
 class Main:
