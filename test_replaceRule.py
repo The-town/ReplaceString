@@ -13,6 +13,11 @@ class TestDeleteBlankLine(unittest.TestCase):
         string: str = "aaa\n　　a\nbあb\na\n\n\nccc"
         self.assertEqual(delete_blank_line(string), "aaa\n　　a\nbあb\na\nccc")
 
+
+class TestChangeString(unittest.TestCase):
+    def setUp(self) -> None:
+        pass
+
     def test_change_string_one_change_pattern(self) -> None:
         text: str = "aaa b1b c%cあ"
         strings_before_change: Tuple[str] = ("a",)
