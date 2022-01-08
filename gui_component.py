@@ -5,6 +5,7 @@ from typing import List
 from replaceRule import change_string
 from validate import validate_number_of_replace_rule
 
+
 class Main:
     def __init__(self) -> None:
         root: tk.Tk = tk.Tk()
