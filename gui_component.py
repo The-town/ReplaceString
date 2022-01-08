@@ -34,7 +34,6 @@ class Main:
 
     def execute_replace_rule(self, event=None) -> None:
         input_text: str = self.input_replace_text.get(1.0, tk.END)[:-1]
-        # output_text: str = delete_blank_line(input_text)
         rule_replace_text: str = self.rule_replace_text.get(1.0, tk.END)[:-1]
         strings_before_change: List[str] = []
         strings_after_change: List[str] = []
