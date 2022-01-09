@@ -1,6 +1,7 @@
 import tkinter.scrolledtext as scrolled_text
 import tkinter as tk
 from typing import List
+import configparser
 
 from replaceRule import analyze_replace_rules, change_string, change_string_list
 from validate import validate_number_of_replace_rule
@@ -12,16 +13,19 @@ class Main:
         root.title("文字列置換")
         root.configure(background='white')
 
+        config: configparser = configparser.ConfigParser()
+        config.read("./config.ini", "UTF-8")
+
         text_frame: Frame = Frame(root)
         text_frame.grid(column=0, row=1)
 
-        self.input_replace_text: InputReplaceText = InputReplaceText(text_frame)
+        self.input_replace_text: InputReplaceText = InputReplaceText(config=config, master=text_frame)
         self.input_replace_text.grid(column=0, row=0)
 
-        self.rule_replace_text: RuleReplaceText = RuleReplaceText(text_frame)
+        self.rule_replace_text: RuleReplaceText = RuleReplaceText(config=config, master=text_frame)
         self.rule_replace_text.grid(column=1, row=0)
 
-        self.output_replace_text: OutputReplaceText = OutputReplaceText(text_frame)
+        self.output_replace_text: OutputReplaceText = OutputReplaceText(config=config, master=text_frame)
         self.output_replace_text.grid(column=2, row=0)
 
         function_frame: Frame = Frame(root)
@@ -69,27 +73,27 @@ class Frame(tk.Frame):
 
 
 class InputReplaceText(scrolled_text.ScrolledText):
-    def __init__(self, master=None):
+    def __init__(self, config: configparser, master=None):
         scrolled_text.ScrolledText.__init__(self, master)
         self["width"] = 50
         self["height"] = 20
-        self["font"] = ("メイリオ", 12)
+        self["font"] = (config["DisplayFont"]["text_font_kind"], config["DisplayFont"]["text_font_size"])
 
 
 class RuleReplaceText(scrolled_text.ScrolledText):
-    def __init__(self, master=None):
+    def __init__(self, config: configparser, master=None):
         scrolled_text.ScrolledText.__init__(self, master)
         self["width"] = 25
         self["height"] = 20
-        self["font"] = ("メイリオ", 12)
+        self["font"] = (config["DisplayFont"]["text_font_kind"], config["DisplayFont"]["text_font_size"])
 
 
 class OutputReplaceText(scrolled_text.ScrolledText):
-    def __init__(self, master=None):
+    def __init__(self, config: configparser, master=None):
         scrolled_text.ScrolledText.__init__(self, master)
         self["width"] = 50
         self["height"] = 20
-        self["font"] = ("メイリオ", 12)
+        self["font"] = (config["DisplayFont"]["text_font_kind"], config["DisplayFont"]["text_font_size"])
 
 
 class Button(tk.Button):

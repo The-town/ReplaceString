@@ -1,5 +1,5 @@
 import re
-
+import configparser
 from typing import Tuple, List
 
 
@@ -16,12 +16,20 @@ def analyze_replace_rules(rule_replace_text: str) -> Tuple[List, List]:
     strings_before_change, strings_after_change: tuple
         置換前の文字列と置換後の文字列のリスト
     """
+    config: configparser = configparser.ConfigParser()
+    config.read("./config.ini", "UTF-8")
+
+    split_string: str = " -> "
+    if config["ReplaceRule"]["split_string"]:
+        split_string = config["ReplaceRule"]["split_string"]
+
     strings_before_change: List[str] = []
     strings_after_change: List[str] = []
+
     for rule in rule_replace_text.split("\n"):
-        if " -> " in rule:
-            strings_before_change.append(rule.split(" -> ")[0])
-            strings_after_change.append(rule.split(" -> ")[1])
+        if split_string in rule:
+            strings_before_change.append(rule.split(split_string)[0])
+            strings_after_change.append(rule.split(split_string)[1])
 
     return strings_before_change, strings_after_change
 
