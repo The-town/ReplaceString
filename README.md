@@ -4,6 +4,12 @@
 
 ![replace_string_gui](./doc_img/readme_replace_string_intro_gui.png)
 
+## 実行方法
+
+```bash
+python main.py
+```
+
 ## 使い方
 
 1. 左側のテキストボックスに置換前のテキストを入れます。
