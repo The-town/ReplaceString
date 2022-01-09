@@ -3,6 +3,29 @@ import re
 from typing import Tuple, List
 
 
+def analyze_replace_rules(rule_replace_text: str) -> Tuple[List, List]:
+    """
+    入力された置換ルールを解析して、置換前の文字列と置換後の文字列を分ける関数
+    Parameters
+    ----------
+    rule_replace_text: str
+        置換ルール
+
+    Returns
+    -------
+    strings_before_change, strings_after_change: tuple
+        置換前の文字列と置換後の文字列のリスト
+    """
+    strings_before_change: List[str] = []
+    strings_after_change: List[str] = []
+    for rule in rule_replace_text.split("\n"):
+        if " -> " in rule:
+            strings_before_change.append(rule.split(" -> ")[0])
+            strings_after_change.append(rule.split(" -> ")[1])
+
+    return strings_before_change, strings_after_change
+
+
 def delete_blank_line(text: str) -> str:
     """
     空白行を削除する関数

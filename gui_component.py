@@ -2,7 +2,7 @@ import tkinter.scrolledtext as scrolled_text
 import tkinter as tk
 from typing import List
 
-from replaceRule import change_string, change_string_list
+from replaceRule import analyze_replace_rules, change_string, change_string_list
 from validate import validate_number_of_replace_rule
 
 
@@ -39,12 +39,8 @@ class Main:
     def execute_replace_rule(self, event=None) -> None:
         input_text: str = self.input_replace_text.get(1.0, tk.END)[:-1]
         rule_replace_text: str = self.rule_replace_text.get(1.0, tk.END)[:-1]
-        strings_before_change: List[str] = []
-        strings_after_change: List[str] = []
-        for rule in rule_replace_text.split("\n"):
-            if " -> " in rule:
-                strings_before_change.append(rule.split(" -> ")[0])
-                strings_after_change.append(rule.split(" -> ")[1])
+
+        strings_before_change, strings_after_change = analyze_replace_rules(rule_replace_text)
 
         self.output_replace_text.delete(1.0, tk.END)
         is_validate, error_msg = validate_number_of_replace_rule(strings_before_change, strings_after_change)
