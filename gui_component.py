@@ -13,6 +13,9 @@ class Main:
         root.title("文字列置換")
         root.configure(background='white')
 
+        self.create_key_bind(root, "<Control_L>r", self.execute_replace_rule)
+        self.create_key_bind(root, "<Control_R>r", self.execute_replace_rule)
+
         config: configparser = configparser.ConfigParser()
         config.read("./config.ini", "UTF-8")
 
@@ -40,6 +43,10 @@ class Main:
 
         root.mainloop()
 
+    @staticmethod
+    def create_key_bind(tk_object: tk.Tk, bind_key: str, bind_function) -> None:
+        tk_object.bind(bind_key, bind_function)
+
     def execute_replace_rule(self, event=None) -> None:
         input_text: str = self.input_replace_text.get(1.0, tk.END)[:-1]
         rule_replace_text: str = self.rule_replace_text.get(1.0, tk.END)[:-1]
@@ -65,7 +72,7 @@ class Frame(tk.Frame):
     def __init__(self, master=None):
         tk.Frame.__init__(self, master)
         self.grid(column=0, row=0)
-        self["width"] = 100
+        self["width"] = 50
         self["height"] = 100
         self["padx"] = 10
         self["pady"] = 10
@@ -75,7 +82,7 @@ class Frame(tk.Frame):
 class InputReplaceText(scrolled_text.ScrolledText):
     def __init__(self, config: configparser, master=None):
         scrolled_text.ScrolledText.__init__(self, master)
-        self["width"] = 50
+        self["width"] = 25
         self["height"] = 20
         self["font"] = (config["DisplayFont"]["text_font_kind"], config["DisplayFont"]["text_font_size"])
 
@@ -91,7 +98,7 @@ class RuleReplaceText(scrolled_text.ScrolledText):
 class OutputReplaceText(scrolled_text.ScrolledText):
     def __init__(self, config: configparser, master=None):
         scrolled_text.ScrolledText.__init__(self, master)
-        self["width"] = 50
+        self["width"] = 25
         self["height"] = 20
         self["font"] = (config["DisplayFont"]["text_font_kind"], config["DisplayFont"]["text_font_size"])
 
