@@ -13,9 +13,6 @@ class Main:
         root.title("文字列置換")
         root.configure(background='white')
 
-        self.create_key_bind(root, "<Control_L>r", self.execute_replace_rule)
-        self.create_key_bind(root, "<Control_R>r", self.execute_replace_rule)
-
         config: configparser = configparser.ConfigParser()
         config.read("./config.ini", "UTF-8")
 
@@ -33,19 +30,36 @@ class Main:
 
         function_frame: Frame = Frame(root)
         function_frame.grid(column=0, row=0)
-        button: Button = Button(function_frame)
-        button["text"] = "置換"
-        button.grid(column=0, row=1)
-        button["command"] = self.execute_replace_rule
+        replace_button: Button = Button(function_frame)
+        replace_button["text"] = "置換"
+        replace_button.grid(column=0, row=1)
+        replace_button["command"] = self.execute_replace_rule
+
+        copy_button: Button = Button(function_frame)
+        copy_button["text"] = "コピー"
+        copy_button.grid(column=1, row=1)
+        copy_button["command"] = self.output_replace_text.add_text_to_clipboard
 
         self.string_type_check_button: StringTypeCheckButton = StringTypeCheckButton(function_frame)
-        self.string_type_check_button.grid(column=0, row=0)
+        self.string_type_check_button.grid(column=0, row=0, columnspan=2)
+
+        self.create_key_bind(root, "[Control]-r", self.execute_replace_rule)
+        self.create_key_bind(root, "[Control Shift]-C", self.output_replace_text.add_text_to_clipboard)
 
         root.mainloop()
 
     @staticmethod
     def create_key_bind(tk_object: tk.Tk, bind_key: str, bind_function) -> None:
-        tk_object.bind(bind_key, bind_function)
+        key_map: dict = {
+            "[Control]": ("<Control_L>", "<Control_R>"),
+            "[Control Shift]": ("<Control_L><Shift_L>", "<Control_L><Shift_R>",
+                                "<Control_R><Shift_L>", "<Control_R><Shift_R>")
+        }
+
+        for key_name in key_map.keys():
+            for key in key_map[key_name]:
+                converted_bind_key = bind_key.replace("-", "").replace(key_name, key)
+                tk_object.bind(converted_bind_key, bind_function)
 
     def execute_replace_rule(self, event=None) -> None:
         input_text: str = self.input_replace_text.get(1.0, tk.END)[:-1]
@@ -101,6 +115,10 @@ class OutputReplaceText(scrolled_text.ScrolledText):
         self["width"] = 25
         self["height"] = 20
         self["font"] = (config["DisplayFont"]["text_font_kind"], config["DisplayFont"]["text_font_size"])
+
+    def add_text_to_clipboard(self, event=None) -> None:
+        self.clipboard_clear()
+        self.clipboard_append(self.get(1.0, tk.END)[:-1])  # 文字列の最後に挿入される改行文字を取り除くため
 
 
 class Button(tk.Button):
