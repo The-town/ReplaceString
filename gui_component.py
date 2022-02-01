@@ -99,6 +99,7 @@ class InputReplaceText(scrolled_text.ScrolledText):
         self["width"] = 25
         self["height"] = 20
         self["font"] = (config["DisplayFont"]["text_font_kind"], config["DisplayFont"]["text_font_size"])
+        self["undo"] = True
 
 
 class RuleReplaceText(scrolled_text.ScrolledText):
@@ -107,6 +108,7 @@ class RuleReplaceText(scrolled_text.ScrolledText):
         self["width"] = 25
         self["height"] = 20
         self["font"] = (config["DisplayFont"]["text_font_kind"], config["DisplayFont"]["text_font_size"])
+        self["undo"] = True
 
 
 class OutputReplaceText(scrolled_text.ScrolledText):
